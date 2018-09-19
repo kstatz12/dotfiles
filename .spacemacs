@@ -40,6 +40,7 @@ values."
      better-defaults
      emacs-lisp
      elixir
+     erlang
      git
      spell-checking
      syntax-checking
