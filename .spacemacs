@@ -30,11 +30,11 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+shell-scripts
      yaml
      sql
      html
      javascript
-     (tern :variables tern-disable-port-files nil) 
      helm
      erlang
      elixir
@@ -48,7 +48,6 @@ values."
      markdown
      org
      csharp
-     treemacs
      (shell :variables
              shell-default-height 30
              shell-default-position 'bottom)
@@ -58,8 +57,8 @@ values."
      (c-c++ :variables
               c-c++-default-mode-for-headers 'c++-mode
               c-c++-enable-clang-support t)
-     protobuf
-     restclient
+     restclient 
+     plantuml
      )
 
    ;; List of additional packages that will be installed without being
@@ -324,7 +323,31 @@ This function is called at the very end of Spacemacs initialization after
 layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
+you should place your code here.
+	
+  (setq org-agenda-files `("/home/karl/org/"))
+  
+  (setq org-capture-templates
+        `(("t" "Todo" entry
+           (file+headline "/home/karl/org/notes.org" "Tasks")
+           "* TODO %?\n Created: %u\n")
+          ("T" "Todo" entry
+           (file+headline "/home/karl/org/notes.org" "Tasks")
+           "* TODO %?\n %a\n")
+          ("s" "Short" entry
+           (file+headline "/home/karl/org/rd.org" "Short")
+           "** TODO %?\n Created: %u\n")
+          ("n" "Near" entry
+           (file+headline "/home/karl/org/rd.org" "Near")
+           "** TODO %?\n Created: %u\n")
+          ("f" "Far" entry
+           (file+headline "/home/karl/org/rd.org" "Far")
+           "** TODO %?\n Created: %u\n")
+          ("c" "Class Todo" entry
+           (file+headline "/home/karl/org/class.org" "Tasks")
+           "* TODO %?\n Created: %u\n")
+          ))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
