@@ -63,7 +63,7 @@ values."
      protobuf
      (treemacs :variables treemacs-use-follow-mode 'tag)
      cmake
-     the
+     themes-megapack
      )
 
    ;; List of additional packages that will be installed without being
