@@ -30,15 +30,16 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-shell-scripts
+     shell-scripts
      yaml
      sql
      html
      javascript
+     (tern :variables tern-disable-port-files nil) 
      helm
      erlang
      elixir
-     rust
+     (rust :variables rust-backend 'racer)
      (go :variables go-use-gometalinter t)
      auto-completion
      better-defaults
@@ -47,18 +48,22 @@ shell-scripts
      docker
      markdown
      org
-     csharp
+     (csharp :variables csharp-backend 'lsp)
+     lsp
      (shell :variables
              shell-default-height 30
              shell-default-position 'bottom)
      spell-checking
      syntax-checking
      version-control
-     (c-c++ :variables
-              c-c++-default-mode-for-headers 'c++-mode
-              c-c++-enable-clang-support t)
-     restclient 
+     (c-c++ :variables c-c++-backend 'lsp-clangd)
+     restclient
      plantuml
+     asciidoc
+     protobuf
+     (treemacs :variables treemacs-use-follow-mode 'tag)
+     cmake
+     the
      )
 
    ;; List of additional packages that will be installed without being
