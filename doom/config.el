@@ -1,4 +1,31 @@
-(setq doom-theme 'doom-nord)
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
+;; Place your private configuration here! Remember, you do not need to run 'doom
+;; sync' after modifying this file!
+
+
+;; Some functionality uses this to identify you, e.g. GPG configuration, email
+;; clients, file templates and snippets.
+(setq user-full-name "Karl Statz"
+      user-mail-address "karl.statz@gmail.com")
+
+;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+;; are the three important ones:
+;;
+;; + `doom-font'
+;; + `doom-variable-pitch-font'
+;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;;   presentations or streaming.
+;;
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; font string. You generally only need these two:
+;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+
+;; There are two ways to load a theme. Both assume the theme is installed and
+;; available. You can either set `doom-theme' or manually load a theme with the
+;; `load-theme' function. This is the default:
+(setq doom-theme 'doom-one)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -25,9 +52,32 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+;;
+(after! lsp-mode (dolist (dir '(
+                 "[/\\\\]bin"
+                 "[/\\\\]obj"
+                 "[/\\\\]pkgs"
+                 "[/\\\\]build"
+                 "[/\\\\].local"
+                 "[/\\\\]?"
+                 ))
+    (push dir lsp-file-watch-ignored-directories)))
+
+(after! lsp-mode (setq lsp-enable-file-watchers `t))
+;; (after! lsp-mode (setq lsp-file-watch-threshold 3000))
+
 (after! lsp-csharp
-  (setq lsp-csharp-server-path "~/omnisharp/run")
-  (setq lsp-enable-file-watchers `t))
+  (setq lsp-csharp-server-path "~/omnisharp/run"))
+
+
+(setq lsp-clients-clangd-args '("-j=8"
+                                "--background-index"
+                                "--clang-tidy"
+                                "--completion-style=detailed"))
+(after! lsp-clangd (set-lsp-priority! 'clangd 2))
+
+
+
 (after! org (setq org-agenda-files `("/home/karl.statz/Dropbox/org/")))
 (after! org (setq org-capture-templates
         `(("t" "Todo" entry
@@ -37,15 +87,47 @@
 
 
 (after! plantuml
+  (setq plantuml-jar-path "~/tools/plantuml.jar")
   (setq plantuml-exec-mode `jar))
 
 
-;; RSS
+;; IRC
+(set-irc-server! "irc.libera.chat"
+  `(:tls t
+    :port 6697
+    :nick "kstatz12"
+    :sasl-username "kstatz12"
+    :sasl-password (lambda (&rest _) (+pass-get-secret "liberachat"))
+    :channels ("#emacs"
+               "#csharp"
+               "#erlang"
+               "#lobsters"
+               "#postgresql"
+               "#rabbitmq"
+               "#erlounge")))
+
+;; SQL
+;;
+(setq sqlformat-command 'pgformatter)
+(setq sqlformat-args '("-s2" "-g"))
+
+(load-file "~/.doom.d/lisp/mcrl2-mode/mcrl2-mode.el")
+(add-to-list 'auto-mode-alist '("\\.mcrl2\\'" . mcrl2-mode))
+(add-to-list 'auto-mode-alist '("\\.mcf\\'" . mcf-mode))
+
+
+(after! magit
+  (setq magit-delta-mode +1))
+
+(setq jiralib-url "https://rhinodox.atlassian.net")
+
+(setq fill-column 80)
+
+(setq elfeed-feeds
+      '("https://this-week-in-rust.org/rss.xml"
+        "http://feeds.bbci.co.uk/news/rss.xml"
+        "https://lobste.rs/rss"
+        "https://hnrss.org/frontpage"
+        "https://defector.com/feed/"))
 
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
-(setq elfeed-feeds
-      '("https://www.omnycontent.com/d/playlist/aaea4e69-af51-495e-afc9-a9760146922b/164a1444-ca90-4296-864f-ac020127aba3/8c7f5eb6-fa72-4975-b31d-ac02012a1382/podcast.rss"
-        "https://feeds.megaphone.fm/behindthebastards"
-        "https://feeds.simplecast.com/wjQvYtdl"
-        "https://defector.com/feed/"
-        "https://hnrss.org/frontphttps://hnrss.org/frontpageage"))
