@@ -12,6 +12,7 @@
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
+(setq doom-font (font-spec :family "Anonymous Pro" :size 14))
 ;; + `doom-font'
 ;; + `doom-variable-pitch-font'
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
@@ -25,9 +26,10 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'manoj-dark)
 
-;; If you use `org' and don't want your org files in the default location below,
+;; If you use `
+;; org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/org/")
 
@@ -66,9 +68,6 @@
 (after! lsp-mode (setq lsp-enable-file-watchers `t))
 ;; (after! lsp-mode (setq lsp-file-watch-threshold 3000))
 
-(after! lsp-csharp
-  (setq lsp-csharp-server-path "~/omnisharp/run"))
-
 
 (setq lsp-clients-clangd-args '("-j=8"
                                 "--background-index"
@@ -78,17 +77,17 @@
 
 
 
-(after! org (setq org-agenda-files `("/home/karl.statz/Dropbox/org/")))
+(after! org (setq org-agenda-files `("~/Dropbox/org/")))
 (after! org (setq org-capture-templates
         `(("t" "Todo" entry
-           (file+headline "/home/karl.statz/Dropbox/org/todo.org" "Tasks")
+           (file+headline "~/Dropbox/org/todo.org" "Tasks")
            "* TODO %?\n Created: %u\n")
           )))
 
 
-(after! plantuml
-  (setq plantuml-jar-path "~/tools/plantuml.jar")
-  (setq plantuml-exec-mode `jar))
+(setq plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
+(setq plantuml-default-exec-mode `jar)
+(setq org-plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 
 
 ;; IRC
@@ -109,11 +108,11 @@
 ;; SQL
 ;;
 (setq sqlformat-command 'pgformatter)
-(setq sqlformat-args '("-s2" "-g"))
+(setq sqlformat-args '("-s2" "-g" "-w80" "-B"))
 
-(load-file "~/.doom.d/lisp/mcrl2-mode/mcrl2-mode.el")
-(add-to-list 'auto-mode-alist '("\\.mcrl2\\'" . mcrl2-mode))
-(add-to-list 'auto-mode-alist '("\\.mcf\\'" . mcf-mode))
+;;(load-file "~/.doom.d/lisp/mcrl2-mode/mcrl2-mode.el")
+;;(add-to-list 'auto-mode-alist '("\\.mcrl2\\'" . mcrl2-mode))
+;;(add-to-list 'auto-mode-alist '("\\.mcf\\'" . mcf-mode))
 
 
 (after! magit
@@ -131,3 +130,6 @@
         "https://defector.com/feed/"))
 
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
+
+
+(global-hl-line-mode -1)
