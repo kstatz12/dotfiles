@@ -1,5 +1,11 @@
 (package! sqlformat)
 (package! mastodon)
 (package! protobuf-mode)
-(package! copilot
-  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+(package! ellama)
+(package! llm)
+(package! gptel)
+(package! mix)
+(package! evil-matchit)
+(package! inf-elixir)
+(package! verb)
+(package! flycheck-credo)
